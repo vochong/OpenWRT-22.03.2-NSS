@@ -1,0 +1,41 @@
+OpenWrt 22.03.2, r19803-9a599fee93
+-----------------------------------------------------
+root@OpenWrt:~# uname -a
+Linux OpenWrt 5.10.146 #0 SMP Fri Oct 14 22:44:41 2022 armv7l GNU/Linux
+
+GitHub can be used as a repo for this build's modules. For that:
+
+
+1) Create file /etc/opkg/keys/88aeba6f046fabbf with the build public key. For example:
+
+# cat /etc/opkg/keys/88aeba6f046fabbf 
+untrusted comment: Public usign key for 22.03-nss release builds
+RWSIrrpvBG+rvx+GyxImXvkHdUgmWw6Ia0/6n4/p66ooSsrOzupzo87I
+
+
+2) Update the /etc/opkg/distfeeds.conf to use repo instead. For example:
+
+# cat /etc/opkg/keys/88aeba6f046fabbf
+# src/gz openwrt_core https://downloads.openwrt.org/releases/22.03.2/targets/ipq806x/generic/packages
+src/gz openwrt_nss https://raw.githubusercontent.com/vochong/OpenWRT-22.03.2-NSS/22.03.2-nss-ea8500/bin_ea8500/targets/ipq806x/generic/packages
+src/gz openwrt_base https://downloads.openwrt.org/releases/22.03.2/packages/arm_cortex-a15_neon-vfpv4/base
+src/gz openwrt_luci https://downloads.openwrt.org/releases/22.03.2/packages/arm_cortex-a15_neon-vfpv4/luci
+src/gz openwrt_packages https://downloads.openwrt.org/releases/22.03.2/packages/arm_cortex-a15_neon-vfpv4/packages
+src/gz openwrt_routing https://downloads.openwrt.org/releases/22.03.2/packages/arm_cortex-a15_neon-vfpv4/routing
+src/gz openwrt_telephony https://downloads.openwrt.org/releases/22.03.2/packages/arm_cortex-a15_neon-vfpv4/telephony
+
+
+3) opkg will update and install nicely after that. For example:
+
+opkg update && opkg install arptables-nft_1.8.7-7_arm_cortex-a15_neon-vfpv4.ipk
+
+
+Notes:
+
+# cat Packages.sig 
+untrusted comment: signed by key 88aeba6f046fabbf
+RWSIrrpvBG+rv9yQ7DPdBGYfVuUXJY39jXvAEOU6+c8x2v0OCi+DxEfsrqmpwF6OGX83DYNvQRGTIM+RoWJNol4SNkxgYW+m4ws=
+
+# cat key-build.pub 
+untrusted comment: Local build key
+RWSIrrpvBG+rvx+GyxImXvkHdUgmWw6Ia0/6n4/p66ooSsrOzupzo87I
